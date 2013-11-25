@@ -20,7 +20,6 @@ void add(int u,int v,int R[],int L[]){
     R[u] = v;
 }
 void del(int u){
-    cout<<"del:\n";
     R[L[u]] = R[u];
     L[R[u]] = L[u];
     for(int v = U[u]; v != u; v = U[v])
@@ -31,7 +30,6 @@ void del(int u){
         }
 }
 void res(int u){
-    cout<<"res:\n";
     L[R[u]] = u;
     R[L[u]] = u;
     for(int v = D[u]; v != u; v = D[v])
@@ -58,8 +56,6 @@ bool dfs(){
     del(s);
     for(int u = D[s]; u != s; u = D[u]){
         //select u
-        
-        cout<<value[u].first/sz<<" "<<value[u].first %sz<<" "<<value[u].second<<endl;
         ans[value[u].first] = value[u].second;
         for(int v = R[u]; v != u; v = R[v]) {
             int row = belong[v];
