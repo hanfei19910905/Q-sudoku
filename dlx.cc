@@ -11,7 +11,7 @@ inline int blk(int i,int j){
 }
 char str[1005];
 int ans[1005];
-void op(){for(int i = 1; i <= sz * sz; i++)printf("%d",ans[i]);puts("");}
+void op(){for(int i = 0; i < sz * sz; i++)printf("%d",ans[i]);puts("");}
 void add(int u,int v,int R[],int L[]){
     R[v] = R[u];
     L[v] = u;
@@ -20,6 +20,7 @@ void add(int u,int v,int R[],int L[]){
     R[u] = v;
 }
 void del(int u){
+    cout<<"del:\n";
     R[L[u]] = R[u];
     L[R[u]] = L[u];
     for(int v = U[u]; v != u; v = U[v])
@@ -30,12 +31,13 @@ void del(int u){
         }
 }
 void res(int u){
-    L[u] = L[R[u]];
-    R[u] = R[L[u]];
-    for(int v = D[u]; v != u; v = D[u])
+    cout<<"res:\n";
+    L[R[u]] = u;
+    R[L[u]] = u;
+    for(int v = D[u]; v != u; v = D[v])
         for(int k = R[v]; k != v; k = R[k]){
-            U[k] = U[D[k]];
-            D[k] = D[U[k]];
+            U[D[k]] = k;
+            D[U[k]] = k;
             cnt[belong[k]] ++;
         }
 }
@@ -56,6 +58,8 @@ bool dfs(){
     del(s);
     for(int u = D[s]; u != s; u = D[u]){
         //select u
+        
+        cout<<value[u].first/sz<<" "<<value[u].first %sz<<" "<<value[u].second<<endl;
         ans[value[u].first] = value[u].second;
         for(int v = R[u]; v != u; v = R[v]) {
             int row = belong[v];
@@ -68,17 +72,19 @@ bool dfs(){
         }
     }
     res(s);
+    return 0;
 }
 int main(){
     #ifdef input 
     freopen("./sample/text.txt","r",stdin);
     #endif
-    for(;~scanf("%s",str) && !strcmp(str,"end");){
+    for(;~scanf("%s",str) && strcmp(str,"end");){
         L[0] = R[0] = 0;
         int len = sz * sz * 4;
         for(int i = 1; i <= len; i++) {
             add(i-1,i,R,L);
             U[i] = D[i] = i;
+            cnt[i] = 0;
         }
         for(int i = 0; i < sz; i++)
             for(int j = 0; j < sz; j++){
@@ -89,15 +95,15 @@ int main(){
                     int x = sz * sz + i * sz + p;
                     int y = 2 * sz * sz + j * sz + p;
                     int b = 3 * sz * sz + blk(i,j) * sz + p;
-                    int vec[4] = {v,x,y,b};
+                    int vec[4] = {pos,x,y,b};
                     L[len+1] = R[len+1] = len+1;
                     for(int i = 0; i < 4; i++){
                         ++len;
                         belong[len] = vec[i];
                         add(vec[i],len,U,D);
-                        add(len-1,len,R,L);
+                        if(i)add(len-1,len,R,L);
                         cnt[vec[i]] ++;
-                        value[len] = make_pair(pos,p);;
+                        value[len] = make_pair(pos-1,p);
                     }
                 }
             }
