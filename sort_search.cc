@@ -19,6 +19,7 @@ struct Node{
         return v < A.v;
     }
 };
+// in this program , we remain the skills used in "bitmask.cc"
 inline int count(int mask){
     return bitset<9>(mask).count();
 }
@@ -28,6 +29,7 @@ bool chk(int &x,int &y){
         for(int j = 0; j < 9; j++)if(ch[i][j] == '0'){
             vec.push_back(Node(i,j,count(hashx[i] & hashy[j] & hashb[blk(i,j)])));
         }
+    // you can google it when you don't understand some system function
     sort(vec.begin(),vec.end());
     if(vec.size() == 0) {x = y = -1; return 1;}
     else {
@@ -40,6 +42,7 @@ bool chk(int &x,int &y){
 }
 bool dfs(){
     int x,y;
+    // everytime we choose a grid that has least possible choose 
     if(!chk(x,y)) return 0;
     if(x == -1) {
         for(int i = 0; i < 9; i++)
@@ -67,6 +70,7 @@ int main(){
     int tst;
     #ifdef input 
     freopen("./sample/text.txt","r",stdin);
+    freopen("./output.txt","w",stdout);
     #endif
     char str[100];
     for(; ~scanf("%s",str) && str[0] != 'e';){
