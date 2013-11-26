@@ -73,6 +73,7 @@ bool dfs(){
 int main(){
     #ifdef input 
     freopen("./sample/text.txt","r",stdin);
+    freopen("./output.txt","w",stdout);
     #endif
     for(;~scanf("%s",str) && strcmp(str,"end");){
         L[0] = R[0] = 0;
